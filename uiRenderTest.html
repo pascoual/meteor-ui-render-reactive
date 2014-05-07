@@ -7,12 +7,19 @@
 </body>
 
 <template name="hello">
-  <h1>Hello World!</h1>
+  <h1>How to get UI.renderWithData reactive</h1>
   {{greeting}}
   <input type="button" value="Click" />
   <div class="wrapper"></div>
 </template>
 
 <template name="books">
-{{name}}
+  {{#with getBook id}}
+    I'm reactive: {{name}}
+  {{/with}}
+</template>
+
+<template name="booksNonReactive">
+  <br>I'm not reactive: {{name}}
+  <hr>Now in the console run:<br><i>Books.update({_id: 'njynTFMaHLjzgBsDM'}, {$set: {name: 'YMCA'}})</i>
 </template>

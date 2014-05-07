@@ -1,13 +1,8 @@
 Books = new Meteor.Collection('books');
-if (Books.find().count() === 0)
-  Books.insert({
-    "_id" : "njynTFMaHLjzgBsDM",
-    "name" : "My Book 1"
-});
 
 if (Meteor.isClient) {
   Template.hello.greeting = function () {
-    return "Welcome to uiRenderTest.";
+    return "Click to show the book.";
   };
 
   Template.hello.events({
@@ -16,14 +11,23 @@ if (Meteor.isClient) {
       if (typeof console !== 'undefined') {
         console.log("You pressed the button");
         tmpl.findAll(".wrapper").html('');
-        UI.insert(UI.renderWithData(Template.books, Books.findOne({_id: "njynTFMaHLjzgBsDM"})), tmpl.find(".wrapper"));
+        UI.insert(UI.renderWithData(Template.books, {id: "njynTFMaHLjzgBsDM"}), tmpl.find(".wrapper"));
+        UI.insert(UI.renderWithData(Template.booksNonReactive, Books.findOne({_id: "njynTFMaHLjzgBsDM"})), tmpl.find(".wrapper"));
       }
     }
   });
+
+  Template.books.getBook = function (id) {
+    return Books.findOne({_id: id});
+  }
 }
 
 if (Meteor.isServer) {
   Meteor.startup(function () {
-    // code to run on server at startup
+    if (Books.find().count() === 0)
+      Books.insert({
+        "_id" : "njynTFMaHLjzgBsDM",
+        "name" : "My Book 1"
+    });
   });
 }
