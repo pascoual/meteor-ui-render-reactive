@@ -2,7 +2,7 @@ Books = new Meteor.Collection('books');
 
 if (Meteor.isClient) {
   Template.hello.greeting = function () {
-    return "Click to show the book.";
+    return "Click to show the book:";
   };
 
   Template.hello.events({
@@ -20,6 +20,14 @@ if (Meteor.isClient) {
   Template.books.getBook = function (id) {
     return Books.findOne({_id: id});
   }
+
+  Template.booksNonReactive.newBookName = function () {
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    for( var i=0; i < 5; i++ )
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+    return text;
+  }
 }
 
 if (Meteor.isServer) {
@@ -29,5 +37,11 @@ if (Meteor.isServer) {
         "_id" : "njynTFMaHLjzgBsDM",
         "name" : "My Book 1"
     });
+  });
+
+  Books.allow({
+    update: function (userId, doc, fields, modifier) {
+      return true;
+    }
   });
 }
